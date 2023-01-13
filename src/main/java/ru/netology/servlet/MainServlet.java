@@ -10,6 +10,10 @@ import javax.servlet.http.HttpServletResponse;
 
 public class MainServlet extends HttpServlet {
     private PostController controller;
+    public static final String apiPath = "/api/posts";
+    public static final String GET = "GET";
+    public static final String POST = "POST";
+    public static final String DELETE = "DELETE";
 
     @Override
     public void init() {
@@ -25,20 +29,20 @@ public class MainServlet extends HttpServlet {
             final var path = req.getRequestURI();
             final var method = req.getMethod();
             // primitive routing
-            if (method.equals("GET") && path.equals("/api/posts")) {
+            if (method.equals(GET) && path.equals(apiPath)) {
                 controller.all(resp);
                 return;
             }
-            if (method.equals("GET") && path.matches("/api/posts/\\d+")) {
+            if (method.equals(GET) && path.matches(apiPath + "\\d+")) {
                 // easy way
                 controller.getById(getPostID(path), resp);
                 return;
             }
-            if (method.equals("POST") && path.equals("/api/posts")) {
+            if (method.equals(POST) && path.equals(apiPath)) {
                 controller.save(req.getReader(), resp);
                 return;
             }
-            if (method.equals("DELETE") && path.matches("/api/posts/\\d+")) {
+            if (method.equals(DELETE) && path.matches(apiPath + "\\d+")) {
                 // easy way
                 controller.removeById(getPostID(path), resp);
                 return;
