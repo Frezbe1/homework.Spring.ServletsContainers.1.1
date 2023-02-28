@@ -1,20 +1,24 @@
 package ru.netology.repository;
 
+import org.springframework.stereotype.Repository;
 import ru.netology.model.Post;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
-// Stub
+@Repository
 public class PostRepository {
 
-    private final Map<Long, Post> posts;
     private final AtomicLong postID;
+    private final Map<Long, Post> posts;
 
     public PostRepository() {
-        posts = new ConcurrentHashMap<>();
         postID = new AtomicLong(0);
+        posts = new ConcurrentHashMap<>();
     }
 
     public List<Post> all() {
@@ -30,6 +34,7 @@ public class PostRepository {
         if (postExistingID > 0 && posts.containsKey(postExistingID)) {
             posts.replace(postExistingID, post);
         } else {
+            // Specify postID.
             long newPostID = postExistingID == 0 ? postID.incrementAndGet() : postExistingID;
             post.setId(newPostID);
             posts.put(newPostID, post);
